@@ -77,7 +77,6 @@ public class LongMultiplication {
         }
 
         return result.toUpperCase(); //16E80B3A
-
     }
 
     public static void main(String[] args) {
