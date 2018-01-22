@@ -33,7 +33,6 @@ public class SumBase16 {
         if (highest > 0)
         result = String.valueOf(highest);
         result += new String(C);
-        //System.out.print(new String(C));
 
         return result;
     }
