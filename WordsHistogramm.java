@@ -17,25 +17,22 @@ Output
 import java.util.Scanner;
 
 public class WordsHistogramm {
-    public static String lpad(String str, int length) {
+    public static String lpad(String str, String pad, int length) {
         while (str.length() < length)
-            str = " " + str;
+            str = pad + str;
         return str;
     }
 
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        String word = in.nextLine();
+        String word = "U1  Pl  qQg1KDJ IzSXjCrj7  KOgb wa  NDhy 1L1  QJlJWXjOe  SJ8Y4RT l9H3kocDS  wC  jzCp J1  qGwmW 9e3xUrQqaC  u2u  kE rE mDJLEIMGMI  pp bf83OGG zYR8q  z5I  xr  wN  N4d r0jxYMM0c8 Ib2JDgvV  sZ  8Ud  MeFmdumLAN  XHKvsnJVU8 c2U  KACAw9Kg tFnA hhdKIgB  3Z 9I";//in.nextLine();
         int maxLength = 0;
-        int minLength = 1;
         int minRow = -1;
         String lastLine = "";
         for (String val : word.split("\\s+")) {
             if (maxLength <= val.length())
                 maxLength = val.length();
-            if (minLength >= val.length())
-                minLength = val.length();
         }
 
         int[] words = new int[maxLength + 1];
@@ -46,10 +43,11 @@ public class WordsHistogramm {
 
         for (int i = 1; i < maxLength + 1; i++)
             if (words[i] > 0) {
-                lastLine += lpad(String.valueOf(i), 3);
+                lastLine += lpad(String.valueOf(i)," ", 3);
                 if (minRow <= words[i])
                     minRow = words[i];
         }
+        System.out.println(minRow);
         for (int j = maxLength + 1 - minRow; j < maxLength + 1; j++) {
             for (int i = 1; i < maxLength + 1; i++) {
                 if (words[i] > 0) {
