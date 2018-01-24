@@ -1,43 +1,43 @@
-import java.util.Scanner;
+import  java.util.*;
 
 public class MinimalTrianglePath {
-  public static int getPath(int[][] arr, int col, int row) {
-    int result = arr[row][col];
-    if (row != arr[0].length - 1) {
-      int leftMove = getPath(arr, col, row + 1);
-      int rightMove = getPath(arr, col + 1, row + 1);
-      result += Math.min(leftMove, rightMove);
-    }
-    return result;
-  }
-
-  public static int TrianglePath(int[][] arr, int row, int col, int sum) {
-    if (row == arr[0].length - 1)
-      return sum + arr[row][col];
-    else {
-      int leftMove = TrianglePath(arr, row + 1, col, sum + arr[row][col]);
-      int rightMove = TrianglePath(arr, row + 1, col + 1, sum + arr[row][col]);
-      return Math.min(leftMove, rightMove);
-    }
-  }
-
-  public static int TrianglePath2(int[][] arr){
-    for (int i = arr[0].length - 1; i > 0; i--)
-      for (int j = 0; j < arr[0].length - 1; j++)
-        arr[i - 1][j] += Math.min(arr[i][j], arr[i][j + 1]);
-    return arr[0][0];
-  }
+  public static int N;
+  public static int[][] triangleM;
+  public static int minSum = 1; // для формирование первичного явно НЕ оптимального решения. Чтоб можно было улучшать поиск
 
   public static void main(String[] args) {
     Scanner in = new Scanner(System.in);
-    int lineCount = in.nextInt();
-    int[][] arr = new int[lineCount][lineCount];
-    for (int i = 0; i < lineCount; i++) {
-      for (int j = 0; j < i + 1; j++)
-        arr[i][j] = in.nextInt();
+    N = in.nextInt();
+    triangleM = new int[N][N];
+
+    for (int i = 0; i < N; i++) { // i - кордината "у", номер строки
+      for (int j = 0; j < i + 1; j++) {// j -  кордината х, номер колонки. От 0 до значения номера строки
+        triangleM[i][j] = in.nextInt();
+        minSum += triangleM[i][j]; // формирование первичного явно НЕ оптимального решения
+      }
     }
-    //System.out.println(TrianglePath(arr, 0, 0, 0));
-    System.out.println(TrianglePath2(arr));
+    //
+    findMinimalPath(triangleM[0][0], 0, 0); // запуск поиска из ячейки с кооридинатами (0,0)
+    System.out.print(minSum);
   }
 
+  // countSteps = coordY +1 //findMinimalPath(int countSteps, int currentSum, int coordY, int coordX)
+  public static void findMinimalPath(int currentSum, int coordY, int coordX) {
+
+    // если в какой то клетке накопленная сумма привышает оптимальное решение, то дальше запускать рекурсивный поиск нет смысла
+    if (currentSum > minSum)
+      return;
+
+    if (coordY == N - 1) { // точка выхода из рекурсии: прошли N  шагов
+
+      if (currentSum < minSum) { // текущая накопленная сумма меньше ранее найденого оптимального решения
+        minSum = currentSum; // улучшаем оптимальное решение
+      }
+      return; // выходим из рекурсии по условию
+    }
+    // 1 - движение вертекально в низ;
+    findMinimalPath(currentSum + triangleM[coordY + 1][coordX + 0], coordY + 1, coordX + 0);
+    // 2 - движение в низ и в право;
+    findMinimalPath(currentSum + triangleM[coordY + 1][coordX + 1], coordY + 1, coordX + 1);
+  }
 }
